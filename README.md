@@ -10,3 +10,10 @@ compile with :
 
 `./ray_ImageManipulator SOME_IMAGE_FILE.PNG`
 
+### Extra
+
+`generate_bands.c`
+
+Generates horizontal and vertical band texture .
+Also Checkerboard textures when combined
+
