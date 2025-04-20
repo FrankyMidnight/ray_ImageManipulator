@@ -26,7 +26,10 @@ Image base_image;
 Image copy_image;
 Texture2D texture;
 
-void generate_bands(void);
+
+void generate_vBands(void);
+void generate_hBands(void);
+void generate_checkerBands(void);
 
 int main(void)
 {
@@ -92,9 +95,17 @@ void cleanup(void)
 }
 void update(void)
 {
-    if (IsKeyPressed(KEY_G))
+    if (IsKeyPressed(KEY_V))
     {
-        generate_bands();
+        generate_vBands();
+    }
+    if (IsKeyPressed(KEY_H))
+    {
+        generate_hBands();
+    }
+    if (IsKeyPressed(KEY_C))
+    {
+        generate_checkerBands();
     }
 }
 void draw(void)
@@ -103,16 +114,73 @@ void draw(void)
     DrawTexture(texture, 0, 0, WHITE);
 }
 
-void generate_bands(void)
+void generate_vBands(void)
 {
-    // for (int i = 0; i < WIN_HEIGHT * WIN_WIDTH; ++i)
-    // {
-    //     pixels[i].r = 0;
-    //     pixels[i].g = 255;
-    //     pixels[i].b = 0;
-    //     pixels[i].a = 255;
-    // }
-    // BANDS px = 1/4 HEIGHT 120 / 4 = 30px
+    
+    int band_height = WIN_HEIGHT / 4;
+    bool switch_color = false;
+    for (int row = 0; row < WIN_HEIGHT; ++row)
+    {
+        // if (row % band_height == 0)
+        // {
+        //     switch_color = !switch_color;
+        // }
+        for (int col = 0; col < WIN_WIDTH; ++col)
+        {
+            if (col % band_height == 0)
+            {
+                switch_color = !switch_color;
+            }
+            int i = row * WIN_WIDTH + col;
+            if (switch_color)
+            {
+                
+                pixels[i] = GREEN;
+            }
+            else if (!switch_color)
+            {
+                
+                pixels[i] = RED;
+            }
+        }
+    }
+    UpdateTexture(texture, pixels);
+}
+void generate_hBands(void)
+{
+    
+    int band_height = WIN_HEIGHT / 4;
+    bool switch_color = false;
+    for (int row = 0; row < WIN_HEIGHT; ++row)
+    {
+        if (row % band_height == 0)
+        {
+            switch_color = !switch_color;
+        }
+        for (int col = 0; col < WIN_WIDTH; ++col)
+        {
+            // if (col % band_height == 0)
+            // {
+            //     switch_color = !switch_color;
+            // }
+            int i = row * WIN_WIDTH + col;
+            if (switch_color)
+            {
+                
+                pixels[i] = GREEN;
+            }
+            else if (!switch_color)
+            {
+                
+                pixels[i] = RED;
+            }
+        }
+    }
+    UpdateTexture(texture, pixels);
+}
+void generate_checkerBands(void)
+{
+    
     int band_height = WIN_HEIGHT / 4;
     bool switch_color = false;
     for (int row = 0; row < WIN_HEIGHT; ++row)
@@ -130,19 +198,13 @@ void generate_bands(void)
             int i = row * WIN_WIDTH + col;
             if (switch_color)
             {
-                // GREEN
-                pixels[i].r = 0;
-                pixels[i].g = 255;
-                pixels[i].b = 0;
-                pixels[i].a = 255;
+                
+                pixels[i] = GREEN;
             }
             else if (!switch_color)
             {
-                // RED
-                pixels[i].r = 255;
-                pixels[i].g = 0;
-                pixels[i].b = 0;
-                pixels[i].a = 255;
+                
+                pixels[i] = RED;
             }
         }
     }

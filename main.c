@@ -1,7 +1,7 @@
 #define RAYGUI_IMPLEMENTATION
 
-#include <raylib.h>
 #include <raygui.h>
+#include <raylib.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -58,12 +58,12 @@ void reset();
 int main(int argc, char *argv[])
 {
     // Read file
-    if(!argv[1])
+    if (!argv[1])
     {
         TraceLog(LOG_ERROR, "Usage : ./ray_ImageManipulator SOME_IMAGEFILE.png");
         return EXIT_SUCCESS;
     }
-    strncpy(filepath , argv[1],256);
+    strncpy(filepath, argv[1], 256);
     if (!setup())
     {
         return EXIT_FAILURE;
@@ -105,13 +105,12 @@ bool setup()
     image_copy = ImageCopy(image_original);
     // load texture from image
     texture = LoadTextureFromImage(image_original);
-    if(!IsTextureValid(texture))
+    if (!IsTextureValid(texture))
     {
         TraceLog(LOG_ERROR, "Error loading texture");
         UnloadImage(image_copy);
         UnloadImage(image_original);
         return false;
-
     }
     // carico i pixel da modificare
     pixels = LoadImageColors(image_copy);
@@ -130,64 +129,68 @@ void draw()
     ClearBackground(DARKGRAY);
     // draw texture
     DrawTexture(texture, 0, 0, WHITE);
-    
+
     // DRAW GUI
 
     // ADD RED
     GuiLabel((Rectangle){.x = WIN_WIDTH - 300, .y = 0, .width = 100, .height = 30}, "RED");
-    GuiSlider((Rectangle){.x = WIN_WIDTH - 150, .y = 0, .width = 100, .height = 30}, NULL, NULL, &input_red, MIN_SLIDER, MAX_SLIDER);
-    
+    GuiSlider((Rectangle){.x = WIN_WIDTH - 150, .y = 0, .width = 100, .height = 30}, NULL, NULL, &input_red, MIN_SLIDER,
+              MAX_SLIDER);
+
     // ADD GREEN
     GuiLabel((Rectangle){.x = WIN_WIDTH - 300, .y = 30, .width = 100, .height = 30}, "GREEN");
-    GuiSlider((Rectangle){.x = WIN_WIDTH - 150, .y = 30, .width = 100, .height = 30}, NULL,NULL, &input_green, MIN_SLIDER, MAX_SLIDER);
-    
+    GuiSlider((Rectangle){.x = WIN_WIDTH - 150, .y = 30, .width = 100, .height = 30}, NULL, NULL, &input_green,
+              MIN_SLIDER, MAX_SLIDER);
+
     // ADD BLUE
     GuiLabel((Rectangle){.x = WIN_WIDTH - 300, .y = 60, .width = 100, .height = 30}, "BLUE");
-    GuiSlider((Rectangle){.x = WIN_WIDTH - 150, .y = 60, .width = 100, .height = 30}, NULL,NULL, &input_blue, MIN_SLIDER, MAX_SLIDER);
-    
+    GuiSlider((Rectangle){.x = WIN_WIDTH - 150, .y = 60, .width = 100, .height = 30}, NULL, NULL, &input_blue,
+              MIN_SLIDER, MAX_SLIDER);
+
     // ADD BRIGHTNESS
     GuiLabel((Rectangle){.x = WIN_WIDTH - 300, .y = 90, .width = 100, .height = 30}, "BRIGHTNESS");
-    GuiSlider((Rectangle){.x = WIN_WIDTH - 150, .y = 90, .width = 100, .height = 30}, NULL,NULL, &input_brightness, MIN_SLIDER, MAX_SLIDER);
-    
+    GuiSlider((Rectangle){.x = WIN_WIDTH - 150, .y = 90, .width = 100, .height = 30}, NULL, NULL, &input_brightness,
+              MIN_SLIDER, MAX_SLIDER);
+
     // ADD CONTRAST
     GuiLabel((Rectangle){.x = WIN_WIDTH - 300, .y = 120, .width = 100, .height = 30}, "CONTRAST");
-    GuiSlider((Rectangle){.x = WIN_WIDTH - 150, .y = 120, .width = 100, .height = 30}, NULL,NULL, &input_contrast, MIN_SLIDER, MAX_SLIDER);
-    
+    GuiSlider((Rectangle){.x = WIN_WIDTH - 150, .y = 120, .width = 100, .height = 30}, NULL, NULL, &input_contrast,
+              MIN_SLIDER, MAX_SLIDER);
+
     // SET GRAYSCALE
     set_grayscale = GuiButton((Rectangle){.x = WIN_WIDTH - 300, .y = 170, .width = 100, .height = 30}, "GRAYSCALE");
-    
+
     // SET RESET
     set_reset = GuiButton((Rectangle){.x = WIN_WIDTH - 150, .y = 170, .width = 100, .height = 30}, "RESET");
-
 }
 void read_input()
 {
-    if(old_input_red != input_red)
+    if (old_input_red != input_red)
     {
         add_color((int)input_red, COLOR_R);
         old_input_red = input_red;
     }
-    if(old_input_green != input_green)
+    if (old_input_green != input_green)
     {
         add_color((int)input_green, COLOR_G);
         old_input_green = input_green;
     }
-    if(old_input_blue != input_blue)
+    if (old_input_blue != input_blue)
     {
         add_color((int)input_blue, COLOR_B);
         old_input_blue = input_blue;
     }
-    if(old_input_brightness != input_brightness)
+    if (old_input_brightness != input_brightness)
     {
         brightness((int)input_brightness);
         old_input_brightness = input_brightness;
     }
-    if(old_input_contrast != input_contrast)
+    if (old_input_contrast != input_contrast)
     {
         contrast((int)input_contrast);
         old_input_contrast = input_contrast;
     }
-    if(IsKeyPressed(KEY_F12))
+    if (IsKeyPressed(KEY_F12))
     {
         char *path_screenshot = "Screenshot.png";
         TakeScreenshot(path_screenshot);
@@ -196,7 +199,7 @@ void read_input()
     {
         grayscale();
     }
-    if(set_reset)
+    if (set_reset)
     {
         reset();
     }
@@ -219,13 +222,13 @@ void add_color(int value, color_t color)
             pixels[i].r = clamp(pixels[i].r + value);
         }
         break;
-        case COLOR_G:
+    case COLOR_G:
         for (int i = 0; i < image_copy.height * image_copy.width; i++)
         {
             pixels[i].g = clamp(pixels[i].g + value);
         }
         break;
-        case COLOR_B:
+    case COLOR_B:
         for (int i = 0; i < image_copy.height * image_copy.width; i++)
         {
             pixels[i].b = clamp(pixels[i].b + value);
@@ -254,10 +257,10 @@ void brightness(int brightness)
     {
         int red = pixels[i].r + brightness;
         pixels[i].r = clamp(red);
-        
+
         int green = pixels[i].g + brightness;
         pixels[i].g = clamp(green);
-        
+
         int blue = pixels[i].b + brightness;
         pixels[i].b = clamp(blue);
     }
@@ -268,16 +271,16 @@ void contrast(int contrast)
     const float alpha = (contrast + 255) / 255.0f;
     for (int i = 0; i < image_copy.height * image_copy.width; i++)
     {
-        int red = pixels[i].r ;
-        int green = pixels[i].g ;
-        int blue = pixels[i].b ;
+        int red = pixels[i].r;
+        int green = pixels[i].g;
+        int blue = pixels[i].b;
 
         red = alpha * (red - 128) + 128;
         red = clamp(red);
-        
+
         green = alpha * (green - 128) + 128;
         green = clamp(green);
-        
+
         blue = alpha * (blue - 128) + 128;
         blue = clamp(blue);
 
@@ -307,5 +310,3 @@ void reset()
     old_input_brightness = 0.0f;
     old_input_contrast = 0.0f;
 }
-
-

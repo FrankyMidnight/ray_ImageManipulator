@@ -2,6 +2,7 @@
 *.d
 # pngs
 *.png
+*.rgs
 
 # Object files
 *.o
@@ -37,6 +38,8 @@
 *.i*86
 *.x86_64
 *.hex
+ray_ImageManipulator
+
 
 # Debug files
 *.dSYM/
